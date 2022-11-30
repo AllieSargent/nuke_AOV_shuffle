@@ -6,6 +6,8 @@
 ############################
 
 import fnmatch
+#nuke.pluginAddPath('H:\2022_Fall_SCAD\VSFX_313\06_nuke_shuffle\scripts')
+#from AOV_shuffle import cleanScene, format_shuf
 
 def cleanScene():
     for node in nuke.allNodes():
@@ -99,18 +101,21 @@ def createLayout():
         v = v + 75
 
         if v > 75:
-            nShuffle = nuke.nodes.Shuffle2(name = f"n_ShuffleNode_{i}", inputs = [nuke.toNode(f"n_topDotNode_{q}"), nuke.toNode(f"n_topDotNode_{i}")],
+            nShuffle = nuke.nodes.Shuffle2(name = f"n_ShuffleNode_{i}",\
+            inputs = [nuke.toNode(f"n_topDotNode_{q}"), nuke.toNode(f"n_topDotNode_{i}")],
             ypos=nDot.ypos() + 150, xpos=nDot.xpos() + z)
             nuke.toNode(f"n_ShuffleNode_{i}")['in1'].setValue(i)
         elif v == 75:
-            nShuffle = nuke.nodes.Shuffle2(name = f"n_ShuffleNode_{i}", inputs = [nuke.toNode("n_DotNode"), nuke.toNode(f"n_topDotNode_{i}")],
+            nShuffle = nuke.nodes.Shuffle2(name = f"n_ShuffleNode_{i}",\
+            inputs = [nuke.toNode("n_DotNode"), nuke.toNode(f"n_topDotNode_{i}")],
             ypos=nDot.ypos() + 150, xpos=nDot.xpos() + z)
             nuke.toNode(f"n_ShuffleNode_{i}")['in1'].setValue(i)
 
         if cln_chan_dict[i] == "True":
             print("go")
 
-            nDenoise = nuke.nodes.Denoise2(name = f"n_DenoiseNode_{i}", inputs = [nuke.toNode(f"n_ShuffleNode_{i}")],
+            nDenoise = nuke.nodes.Denoise2(name = f"n_DenoiseNode_{i}",\
+            inputs = [nuke.toNode(f"n_ShuffleNode_{i}")], 
             ypos=nDot.ypos() + 300, xpos=nDot.xpos() + z)
 
         # Adding Denoise Nodes
@@ -124,10 +129,12 @@ def createLayout():
 
         # Organization compensation for Denoise
         if denoise_ck() == True:
-            orgDot = nuke.nodes.Dot(name = f"n_DotNode_{i}", inputs = [nuke.toNode(f"n_DenoiseNode_{i}")],\
+            orgDot = nuke.nodes.Dot(name = f"n_DotNode_{i}",\
+            inputs = [nuke.toNode(f"n_DenoiseNode_{i}")],\
             ypos = nShuffle.ypos() + v, xpos=nDot.xpos() + z + 34)
         else:
-            orgDot = nuke.nodes.Dot(name = f"n_DotNode_{i}", inputs = [nuke.toNode(f"n_ShuffleNode_{i}")],\
+            orgDot = nuke.nodes.Dot(name = f"n_DotNode_{i}",\
+            inputs = [nuke.toNode(f"n_ShuffleNode_{i}")],\
             ypos = nShuffle.ypos() + v, xpos=nDot.xpos() + z + 34)
             
             
@@ -145,7 +152,7 @@ def createLayout():
         
         if first_m() == True:
             print(cln_chan_lst)
-            nMerge = nuke.nodes.Merge2(operation='plus',
+            nMerge = nuke.nodes.Merge2(operation='plus',\
             name = f"n_Merge{x}",\
             inputs = [nuke.toNode(f"n_Merge{x-1}"),\
             nuke.toNode(f"n_DotNode_{cln_chan_lst[x+1]}")],\
