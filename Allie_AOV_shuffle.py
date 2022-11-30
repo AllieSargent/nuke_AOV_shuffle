@@ -6,8 +6,6 @@
 ############################
 
 import fnmatch
-#nuke.pluginAddPath('H:\2022_Fall_SCAD\VSFX_313\06_nuke_shuffle\scripts')
-#from AOV_shuffle import cleanScene, format_shuf
 
 def cleanScene():
     for node in nuke.allNodes():
